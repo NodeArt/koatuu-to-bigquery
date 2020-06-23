@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - '14.0'
+cache: npm
+env:
+  - CLIENT_EMAIL=$CLIENT_EMAIL
+  - CLIENT_ID=$CLIENT_ID
+  - DATASET_NAME=$DATASET_NAME
+  - TABLE=$TABLE
+  - PRIVATE_KEY=$PRIVATE_KEY
+  - PROJECT_ID=$PROJECT_ID
+install:
+  - npm install
+script:
+  - echo "Starting travis deployment"
+  - npm run start
+branches:
+  only:
+    - master

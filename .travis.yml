@@ -10,8 +10,8 @@ env:
   - PRIVATE_KEY=$PRIVATE_KEY
   - PROJECT_ID=$PROJECT_ID
 install:
-  - npm run download-json
-  - npm install
+  - npm ci
 script:
   - echo "Starting travis deployment"
+  - npm run download-json
   - npm run start

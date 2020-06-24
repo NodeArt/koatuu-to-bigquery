@@ -1,5 +1,6 @@
 const fs = require('fs');
 const JSONStream = require('JSONStream');
+const os = require('os');
 
 require('dotenv').config();
 
@@ -15,7 +16,7 @@ const NAME = "Назва об'єкта українською мовою";
 const levels = {};
 
 const getStream = () => {
-  const jsonData = 'koatuu.json';
+  const jsonData = `${os.tmpdir()}/koatuu.json`;
   const stream = fs.createReadStream(jsonData, {
     encoding: 'utf8',
   });
@@ -62,15 +63,14 @@ const parseData = (stream) => {
           data[THIRD_LEVEL],
           data[FOURTH_LEVEL],
         ].filter((level) => level);
-        await insertData([
-          {
-            Code: code[code.length - 1].toString(),
-            Region: levels[data[FIRST_LEVEL]],
-            City: levels[data[SECOND_LEVEL]],
-            District: levels[data[THIRD_LEVEL]] || '',
-            Village: data[FOURTH_LEVEL] ? data[NAME] : '',
-          },
-        ]);
+        await insertData([{
+          Code: code[code.length - 1].toString(),
+          Region: levels[data[FIRST_LEVEL]],
+          City: levels[data[SECOND_LEVEL]],
+          District: levels[data[THIRD_LEVEL]] || '',
+          Village: data[FOURTH_LEVEL] ? data[NAME] : '',
+        }]);
+        // rows.push();
       }
     })
     .on('end', () => {

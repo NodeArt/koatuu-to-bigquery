@@ -15,6 +15,3 @@ install:
 script:
   - echo "Starting travis deployment"
   - npm run start
-branches:
-  only:
-    - master

@@ -85,13 +85,10 @@ const main = async () => {
     parseData(stream);
   } catch (err) {
     console.error(err);
-    try {
-      await createTable();
+    createTable().then(() => {
       const stream = getStream();
       parseData(stream);
-    } catch (err) {
-      console.error(err);
-    }
+    });
   }
 };
 

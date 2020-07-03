@@ -14,6 +14,10 @@ const db = new BigQuery({
   },
 });
 
+module.exports.createDataset = async () => {
+  return await db.createDataset('labreports');
+};
+
 module.exports.createTable = async () => {
   const options = {
     schema: settlementsSchema,

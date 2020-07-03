@@ -29,6 +29,7 @@ module.exports.createTable = async () => {
 module.exports.getTable = () => {
   return new Promise(async (resolve, reject) => {
     try {
+      //env
       const dataset = db.dataset('labreports');
       const [table] = await dataset.table('koatuu').get();
       resolve(table);
@@ -39,5 +40,7 @@ module.exports.getTable = () => {
 };
 
 module.exports.insertData = async (rows) => {
+  // to env
   return await db.dataset('labreports').table('koatuu').insert(rows);
+//  createWriteStream
 };

@@ -17,6 +17,7 @@ const levels = {};
 const rows = [];
 
 const getStream = () => {
+  //  todo: env || fallback
   const jsonData = `${os.tmpdir()}/koatuu.json`;
   const stream = fs.createReadStream(jsonData, {
     encoding: 'utf8',
@@ -64,6 +65,7 @@ const parseData = (stream) => {
           data[THIRD_LEVEL],
           data[FOURTH_LEVEL],
         ].filter((level) => level);
+        // fix me
         try {
           rows.push(
             insertData([
@@ -91,12 +93,14 @@ const parseData = (stream) => {
 };
 
 const main = async () => {
+  //  no need tin try catch
   try {
     await getTable();
     const stream = getStream();
     parseData(stream);
   } catch (err) {
     console.error(err);
+    // wrong layer, hide it inside
     try {
       await createTable();
       getTable().then(() => {

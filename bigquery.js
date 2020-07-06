@@ -45,9 +45,12 @@ module.exports.getTable = () => {
   return new Promise(async (resolve, reject) => {
     try {
       const exists = await db.dataset(datasetId).table(tableId).exists();
+      console.log('Table exists:', exists[0]);
       if (exists[0]) {
         await db.dataset(datasetId).table(tableId).delete();
+        console.log('Drop table');
         const table = await createTable();
+        console.log('Create table');
         resolve(table);
       } else {
         throw Error('table does not exist');
@@ -55,6 +58,7 @@ module.exports.getTable = () => {
     } catch (err) {
       try {
         const table = await createTable();
+        console.log('Create table');
         resolve(table);
       } catch (err) {
         reject(err);
@@ -122,10 +126,10 @@ module.exports.insertData = (file) => {
         sourceFormat: 'NEWLINE_DELIMITED_JSON',
       }),
     )
-    .on('error', (e) => {
-      console.error('Error!', e);
+    .on('error', (err) => {
+      console.error('Error!', err);
     })
-    .on('complete', (job) => {
-      console.log('All done!', job);
+    .on('complete', () => {
+      console.log('All done!');
     });
 };

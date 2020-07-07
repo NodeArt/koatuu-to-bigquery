@@ -6,6 +6,7 @@
   "scripts": {
     "download-json": "node download",
     "start": "node app",
+    "lint": "eslint --ignore-path .gitignore .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -28,7 +29,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "eslint . --ext .js",
+      "pre-commit": "npm run lint",
       "commit-msg": "commitlint --format -E HUSKY_GIT_PARAMS"
     }
   }

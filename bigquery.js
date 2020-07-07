@@ -15,8 +15,8 @@ const NAME = "Назва об'єкта українською мовою";
 
 const levels = {};
 
-const datasetId = process.env.DATASET_NAME;
-const tableId = process.env.TABLE;
+const datasetId = process.env.DATASET_NAME; // todo: no check for null or defaule value
+const tableId = process.env.TABLE ?? 'koatuu'; // like that one
 
 const db = new BigQuery({
   projectId: process.env.PROJECT_ID,
@@ -29,8 +29,8 @@ const db = new BigQuery({
   },
 });
 
-module.exports.createDataset = async () => {
-  return await db.createDataset(datasetId);
+module.exports.createDataset = async () => { // todo: async will give you promise, but
+  return await db.createDataset(datasetId); // await not needed here
 };
 
 const createTable = async () => {
@@ -41,27 +41,27 @@ const createTable = async () => {
   return table;
 };
 
-module.exports.getTable = () => {
+module.exports.getTable = () => { // todo: rewrite that function
   return new Promise(async (resolve, reject) => {
     try {
       const exists = await db.dataset(datasetId).table(tableId).exists();
       console.log('Table exists:', exists[0]);
       if (exists[0]) {
-        await db.dataset(datasetId).table(tableId).delete();
+        await db.dataset(datasetId).table(tableId).delete(); // you may make it optional using ?
         console.log('Drop table');
         const table = await createTable();
         console.log('Create table');
         resolve(table);
       } else {
-        throw Error('table does not exist');
+        throw Error('table does not exist'); // todo: do not throw, no need in try catch here
       }
     } catch (err) {
       try {
-        const table = await createTable();
+        const table = await createTable(); // todo: this code doubled, flow is wrong
         console.log('Create table');
         resolve(table);
-      } catch (err) {
-        reject(err);
+      } catch (error) { // todo: err in err :)
+        reject(error);
       }
     }
   });
@@ -117,7 +117,7 @@ module.exports.insertData = (file) => {
             District: levels[data[THIRD_LEVEL]] || '',
             Village: data[FOURTH_LEVEL] ? data[NAME] : '',
           };
-          return JSON.stringify(item) + '\n';
+          return JSON.stringify(item) + '\n'; // todo: write an explanation comment, it's not obviouse
         }
       }),
     )

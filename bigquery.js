@@ -14,7 +14,10 @@ const NAME = "Назва об'єкта українською мовою";
 
 const levels = {};
 
-if (Object.values(bigqueryConfig).includes(undefined)) process.exit(1);
+if (Object.values(bigqueryConfig).includes(undefined)) {
+    console.error('no connection settings in env')
+    process.exit(100);
+}
 
 const db = new BigQuery({
   projectId: bigqueryConfig.projectID,

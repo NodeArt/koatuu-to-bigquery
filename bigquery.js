@@ -37,19 +37,15 @@ const createTable = async () => {
 };
 
 module.exports.getTable = async () => {
-  try {
-    const exists = await db.dataset(datasetId).table(tableId).exists();
-    if (exists[0]) {
-      await db.dataset(datasetId).table(tableId).delete();
-      console.log('Drop table');
-      await createTable();
-      console.log('Create table');
-    } else {
-      await createTable();
-      console.log('Create table');
-    }
-  } catch (err) {
-    console.error(err);
+  const exists = await db.dataset(datasetId).table(tableId).exists();
+  if (exists[0]) {
+    await db.dataset(datasetId).table(tableId).delete();
+    console.log('Drop table');
+    await createTable();
+    console.log('Create table');
+  } else {
+    await createTable();
+    console.log('Create table');
   }
 };
 

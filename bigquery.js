@@ -38,14 +38,11 @@ const createTable = async () => {
 module.exports.getTable = async () => {
   const exists = await db.dataset(datasetId).table(tableId).exists();
   if (exists[0]) {
-    await db.dataset(datasetId).table(tableId).delete();
     console.log('Drop table');
-    await createTable();
-    console.log('Create table');
-  } else {
-    await createTable();
-    console.log('Create table');
+    await db.dataset(datasetId).table(tableId).delete();
   }
+  await createTable();
+  console.log('Create table');
 };
 
 module.exports.insertData = (file) => {

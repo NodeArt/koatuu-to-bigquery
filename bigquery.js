@@ -34,7 +34,7 @@ const createTable = () => {
   const options = {
     schema: settlementsSchema,
   };
-  db.dataset(bigqueryConfig.datasetID).createTable(bigqueryConfig.tableID, options);
+  return db.dataset(bigqueryConfig.datasetID).createTable(bigqueryConfig.tableID, options);
 };
 
 module.exports.getTable = async () => {
@@ -43,8 +43,7 @@ module.exports.getTable = async () => {
     console.log('Drop table');
     await db.dataset(bigqueryConfig.datasetID).table(bigqueryConfig.tableID).delete();
   }
-  await createTable();
-  console.log('Create table');
+  return createTable();
 };
 
 module.exports.insertData = (file) => {

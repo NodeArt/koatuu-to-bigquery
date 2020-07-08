@@ -27,11 +27,11 @@ const db = new BigQuery({
   },
 });
 
-const createTable = async () => {
+const createTable = () => {
   const options = {
     schema: settlementsSchema,
   };
-  await db.dataset(bigqueryConfig.datasetID).createTable(bigqueryConfig.tableID, options);
+  db.dataset(bigqueryConfig.datasetID).createTable(bigqueryConfig.tableID, options);
 };
 
 module.exports.getTable = async () => {

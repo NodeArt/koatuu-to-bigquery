@@ -2,7 +2,6 @@ const { BigQuery } = require('@google-cloud/bigquery');
 const fs = require('fs');
 const JSONStream = require('JSONStream');
 const es = require('event-stream');
-require('dotenv').config();
 
 const { settlementsSchema } = require('./config/bigquery');
 

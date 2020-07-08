@@ -15,8 +15,8 @@ const NAME = "Назва об'єкта українською мовою";
 
 const levels = {};
 
-const datasetId = process.env.DATASET_NAME; // todo: no check for null or defaule value
-const tableId = process.env.TABLE ?? 'koatuu'; // like that one
+const datasetId = process.env.DATASET_NAME ?? 'labreports';
+const tableId = process.env.TABLE ?? 'koatuu';
 
 const db = new BigQuery({
   projectId: process.env.PROJECT_ID,
@@ -29,42 +29,28 @@ const db = new BigQuery({
   },
 });
 
-module.exports.createDataset = async () => { // todo: async will give you promise, but
-  return await db.createDataset(datasetId); // await not needed here
-};
-
 const createTable = async () => {
   const options = {
     schema: settlementsSchema,
   };
-  const [table] = await db.dataset(datasetId).createTable(tableId, options);
-  return table;
+  await db.dataset(datasetId).createTable(tableId, options);
 };
 
-module.exports.getTable = () => { // todo: rewrite that function
-  return new Promise(async (resolve, reject) => {
-    try {
-      const exists = await db.dataset(datasetId).table(tableId).exists();
-      console.log('Table exists:', exists[0]);
-      if (exists[0]) {
-        await db.dataset(datasetId).table(tableId).delete(); // you may make it optional using ?
-        console.log('Drop table');
-        const table = await createTable();
-        console.log('Create table');
-        resolve(table);
-      } else {
-        throw Error('table does not exist'); // todo: do not throw, no need in try catch here
-      }
-    } catch (err) {
-      try {
-        const table = await createTable(); // todo: this code doubled, flow is wrong
-        console.log('Create table');
-        resolve(table);
-      } catch (error) { // todo: err in err :)
-        reject(error);
-      }
+module.exports.getTable = async () => {
+  try {
+    const exists = await db.dataset(datasetId).table(tableId).exists();
+    if (exists[0]) {
+      await db.dataset(datasetId).table(tableId).delete();
+      console.log('Drop table');
+      await createTable();
+      console.log('Create table');
+    } else {
+      await createTable();
+      console.log('Create table');
     }
-  });
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 module.exports.insertData = (file) => {
@@ -117,7 +103,7 @@ module.exports.insertData = (file) => {
             District: levels[data[THIRD_LEVEL]] || '',
             Village: data[FOURTH_LEVEL] ? data[NAME] : '',
           };
-          return JSON.stringify(item) + '\n'; // todo: write an explanation comment, it's not obviouse
+          return JSON.stringify(item) + '\n'; // JSON transformer must return newline-delimited JSON
         }
       }),
     )

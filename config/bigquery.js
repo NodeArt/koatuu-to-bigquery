@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 module.exports.bigqueryConfig = {
   datasetID: process.env.DATASET_NAME,
   usersTable: process.env.TABLE,

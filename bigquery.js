@@ -34,6 +34,7 @@ const createTable = () => {
   const options = {
     schema: settlementsSchema,
   };
+  console.log('create table');
   return db.dataset(bigqueryConfig.datasetID).createTable(bigqueryConfig.tableID, options);
 };
 

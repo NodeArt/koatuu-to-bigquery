@@ -31,14 +31,14 @@ const createTable = async () => {
   const options = {
     schema: settlementsSchema,
   };
-  await db.dataset(bigqueryConfig.datasetId).createTable(bigqueryConfig.tableID, options);
+  await db.dataset(bigqueryConfig.datasetID).createTable(bigqueryConfig.tableID, options);
 };
 
 module.exports.getTable = async () => {
-  const exists = await db.dataset(bigqueryConfig.datasetId).table(bigqueryConfig.tableId).exists();
+  const exists = await db.dataset(bigqueryConfig.datasetID).table(bigqueryConfig.tableID).exists();
   if (exists[0]) {
     console.log('Drop table');
-    await db.dataset(bigqueryConfig.datasetId).table(bigqueryConfig.tableId).delete();
+    await db.dataset(bigqueryConfig.datasetID).table(bigqueryConfig.tableID).delete();
   }
   await createTable();
   console.log('Create table');
@@ -99,7 +99,7 @@ module.exports.insertData = (file) => {
       }),
     )
     .pipe(
-      db.dataset(bigqueryConfig.datasetId).table(bigqueryConfig.tableId).createWriteStream({
+      db.dataset(bigqueryConfig.datasetID).table(bigqueryConfig.tableID).createWriteStream({
         sourceFormat: 'NEWLINE_DELIMITED_JSON',
       }),
     )

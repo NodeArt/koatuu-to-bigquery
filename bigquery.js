@@ -3,7 +3,7 @@ const fs = require('fs');
 const JSONStream = require('JSONStream');
 const es = require('event-stream');
 
-const { settlementsSchema } = require('./config/bigquery');
+const { settlementsSchema, bigqueryConfig } = require('./config/bigquery');
 
 const FIRST_LEVEL = 'Перший рівень';
 const SECOND_LEVEL = 'Другий рівень';
@@ -14,17 +14,14 @@ const NAME = "Назва об'єкта українською мовою";
 
 const levels = {};
 
-const datasetId = process.env.DATASET_NAME ?? 'labreports';
-const tableId = process.env.TABLE ?? 'koatuu';
-
 const db = new BigQuery({
-  projectId: process.env.PROJECT_ID,
+  projectId: bigqueryConfig.projectID,
   credentials: {
-    client_email: process.env.CLIENT_EMAIL,
-    private_key: decodeURI(process.env.PRIVATE_KEY),
+    client_email: bigqueryConfig.client_email,
+    private_key: bigqueryConfig.private_key,
   },
   clientOptions: {
-    clientId: process.env.CLIENT_ID,
+    clientId: bigqueryConfig.clientId,
   },
 });
 
@@ -32,14 +29,14 @@ const createTable = async () => {
   const options = {
     schema: settlementsSchema,
   };
-  await db.dataset(datasetId).createTable(tableId, options);
+  await db.dataset(bigqueryConfig.datasetId).createTable(bigqueryConfig.tableID, options);
 };
 
 module.exports.getTable = async () => {
-  const exists = await db.dataset(datasetId).table(tableId).exists();
+  const exists = await db.dataset(bigqueryConfig.datasetId).table(bigqueryConfig.tableId).exists();
   if (exists[0]) {
     console.log('Drop table');
-    await db.dataset(datasetId).table(tableId).delete();
+    await db.dataset(bigqueryConfig.datasetId).table(bigqueryConfig.tableId).delete();
   }
   await createTable();
   console.log('Create table');
@@ -100,7 +97,7 @@ module.exports.insertData = (file) => {
       }),
     )
     .pipe(
-      db.dataset(datasetId).table(tableId).createWriteStream({
+      db.dataset(bigqueryConfig.datasetId).table(bigqueryConfig.tableId).createWriteStream({
         sourceFormat: 'NEWLINE_DELIMITED_JSON',
       }),
     )

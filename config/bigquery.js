@@ -1,7 +1,10 @@
 module.exports.bigqueryConfig = {
   datasetID: process.env.DATASET_NAME,
-  usersTable: process.env.TABLE,
+  tableID: process.env.TABLE,
   projectID: process.env.BIGQUERY_PROJECT_ID,
+  private_key: decodeURI(process.env.PRIVATE_KEY),
+  clientId: process.env.CLIENT_ID,
+  client_email: process.env.CLIENT_EMAIL,
 };
 
 module.exports.settlementsSchema = [

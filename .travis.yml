@@ -10,3 +10,6 @@ script:
   - echo "Starting travis deployment"
   - npm run download-json
   - npm run start
+branches:
+  only:
+  - master

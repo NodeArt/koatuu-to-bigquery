@@ -18,7 +18,7 @@
     "event-stream": "^4.0.1"
   },
   "devDependencies": {
-    "commitlint": "^15.0.0",
+    "commitlint": "^17.0.2",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.4",
